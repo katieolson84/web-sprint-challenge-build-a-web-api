@@ -6,7 +6,7 @@ const { validateAction, validateActionId } = require('../middleware/actionsMiddl
 const router = express.Router();
 
 // Get Action 
-router.get('/', (req,res,next)=> {
+router.get('/', validateAction, (req,res,next)=> {
     Action.find(req.query)
     .then(actions => {
         res.status(200).json(actions)
@@ -27,7 +27,13 @@ router.post('/', validateAction, (req,res,next) => {
     .catch(next)
 })
 // Update PUT Action
-
+router.put('/:id', validateActionId, validateAction, (req,res,next) => {
+    Action.update(req.params.id, req.body)
+    .then(actions => {
+        res.status(200).json(actions)
+    })
+    .catch(next)
+})
 // Delete Action
 
 module.exports = router;
