@@ -7,7 +7,7 @@ const server = express();
 // pull in Routes
 const actionsRouter = require('./actions/actions-router');
 const projectsRouter = require('./projects/projects-router');
-// const mw = require('./middleware/middleware');
+const mw = require('./middleware/projectMiddleware');
 
 // use 
 server.use(express.json());
@@ -17,7 +17,7 @@ server.use(cors());
 
 
 server.use('/api/actions', actionsRouter);
-server.use('/api/projects', projectsRouter);
+server.use('/api/projects', mw.logger, projectsRouter);
 
 server.use("/", (req,res) => {
     res.json("Project Api")

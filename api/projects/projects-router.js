@@ -1,18 +1,17 @@
 const express = require('express');
 const Project = require('./projects-model');
 const Action = require('../actions/actions-model');
-const {validateProject, validateProjectId, validateAction, validateProjectUpdate} = require('../middleware/middleware');
+const {validateProject, validateProjectId, validateAction, validateProjectUpdate} = require('../middleware/projectMiddleware');
 
 const router = express.Router();
+
 // Get Project List
-router.get('/', (req,res) => {
+router.get('/', (req,res, next) => {
     Project.get(req.query)
     .then(projects => {
             res.status(200).json(projects)
         })
-    .catch(err => {
-        res.status(500).json([])
-    });
+    .catch(next)
 })
 
 // Get Project by Id
