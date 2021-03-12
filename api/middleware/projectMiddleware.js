@@ -30,7 +30,7 @@ function logger (req, res, next) {
             res.status(400).json({message: "missing project data"})
             
         }else if
-            (!req.body.name || !req.body.description) {
+            (!req.body.name || !req.body.name.trim() || !req.body.description || !req.body.description.trim()) {
             res.status(400).json({message: "Missing required name and description"})
         }else{
             next()

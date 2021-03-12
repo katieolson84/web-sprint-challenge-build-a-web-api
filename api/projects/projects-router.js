@@ -1,13 +1,14 @@
 const express = require('express');
 const Project = require('./projects-model');
 const Action = require('../actions/actions-model');
-const {validateProject, validateProjectId, validateAction, validateProjectUpdate} = require('../middleware/projectMiddleware');
-
+const {validateProject, validateProjectId, } = require('../middleware/projectMiddleware');
+const { validateAction } = require('../middleware/actionsMiddleware');
+// const {validateAction} = require('../middleware/actionsMiddleware');
 const router = express.Router();
 
 // Get Project List
-router.get('/', (req,res, next) => {
-    Project.get(req.query)
+router.get('/', (req, res, next) => {
+    Project.get()
     .then(projects => {
             res.status(200).json(projects)
         })
@@ -37,7 +38,21 @@ router.put('/:id', validateProjectId, validateProject, (req,res,next) => {
 })
 
 // Delete Project by ID
-
+router.delete('/:id', validateProjectId, (req,res,next) => {
+    Project.remove(req.params.id)
+    .then(projects => {
+        res.status(200).json(projects)
+    })
+    .catch(next)
+})
 // Get list of actions for project by project id
+router.get('/:id/actions', validateProjectId, (req,res,next) => {
+    Project.getProjectActions(req.params.id)
+    .then(actions => {
+        res.status(200).json(actions)
+    })
+    .catch(next)
+})
+
 
 module.exports = router;
