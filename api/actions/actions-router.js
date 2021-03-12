@@ -15,9 +15,17 @@ router.get('/', (req,res,next)=> {
 })
 
 // Get Action by Id
-
+router.get('/:id', validateActionId, (req,res) => {
+    res.json(req.actions)
+})
 // Post Action
-
+router.post('/', validateAction, (req,res,next) => {
+    Action.insert(req.body)
+    .then(actions => {
+        res.status(201).json(actions);
+    })
+    .catch(next)
+})
 // Update PUT Action
 
 // Delete Action
